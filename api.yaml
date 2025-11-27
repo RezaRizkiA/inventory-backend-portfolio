@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: Inventory & Dashboard API
+  description: Dokumentasi API untuk sistem manajemen stok dan dashboard real-time
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Development servers
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        sku:
+          type: string
+          example: "IPHONE-15-PRO"
+        name:
+          type: string
+          example: "Iphone 15 Pro Max"
+        stock:
+          type: integer
+          example: 50
+        price:
+          type: number
+          example: 25000000
+        threshold:
+          type: integer
+          example: 5
+
+paths:
+  # --- GROUP: PRODUCTS ---
+  /api/products:
+    get:
+      summary: Ambil semua data produk
+      tags: [Products]
+      responses:
+        200:
+          description: Berhasil mengambil data
+    post:
+      summary: Tambah produk baru
+      tags: [Products]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        201:
+          description: Produk berhasil dibuat
+
+  # --- GROUP: TRANSACTIONS ---
+  /api/transactions:
+    post:
+      summary: Catat transaksi baru (Otomatis kurangi stok)
+      tags: [Transactions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: integer
+                  example: 1
+                quantity:
+                  type: integer
+                  example: 2
+                platform:
+                  type: string
+                  example: "Tokopedia"
+      responses:
+        201:
+          description: Transaksi sukses & Stok berkurang
+
+  # --- GROUP: DASHBOARD ---
+  /api/dashboard/stats:
+    get:
+      summary: Lihat ringkasan statistik (Omzet, Low Stock)
+      tags: [Dashboard]
+      responses:
+        200:
+          description: Data statistik dashboard

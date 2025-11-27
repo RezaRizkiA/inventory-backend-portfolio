@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Monitor (Real-time)</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        #logs { background: #f4f4f4; border: 1px solid #ddd; padding: 10px; height: 300px; overflow-y: scroll; }
+        .entry { margin-bottom: 5px; padding: 5px; border-bottom: 1px solid #ccc; }
+        .new { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🔴 Live Dashboard Monitor</h1>
+    <p>Status: <span id="status">Disconnected</span></p>
+    
+    <div id="logs">
+        <div class="entry">Menunggu data transaksi...</div>
+    </div>
+
+    <script>
+        // Konek ke Backend kita
+        const socket = io("http://localhost:3000");
+
+        const statusEl = document.getElementById('status');
+        const logsEl = document.getElementById('logs');
+
+        socket.on("connect", () => {
+            statusEl.innerText = "Terhubung (Online)";
+            statusEl.style.color = "green";
+        });
+
+        socket.on("disconnect", () => {
+            statusEl.innerText = "Terputus";
+            statusEl.style.color = "red";
+        });
+
+        // INI DIA: Mendengarkan event dari server
+        socket.on("dashboard_update", (payload) => {
+            console.log("Dapat data:", payload);
+            
+            const newEntry = document.createElement('div');
+            newEntry.className = "entry new";
+            newEntry.innerHTML = `
+                [${new Date().toLocaleTimeString()}] ${payload.message} <br>
+                <small>Total: Rp ${payload.data.totalAmount} | Item ID: ${payload.data.productId}</small>
+            `;
+            
+            logsEl.prepend(newEntry);
+        });
+    </script>
+</body>
+</html>
