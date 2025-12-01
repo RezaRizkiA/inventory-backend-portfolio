@@ -2,10 +2,14 @@ const productService = require("../services/productService");
 
 const getProducts = async (req, res) => {
   try {
-    const products = await productService.getAllProducts();
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const result = await productService.getProducts(page, limit, search);
+
     res.status(200).json({
       success: true,
-      data: products,
+      message: "Data produk berhasil diambil",
+      data: result.data,
+      pagination: result.pagination,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
