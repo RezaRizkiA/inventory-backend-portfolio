@@ -7,6 +7,6 @@ const validate = require("../middleware/validateMiddleware");
 const { productSchema } = require("../validations/apiSchemas");
 
 router.get("/", productController.getProducts);
-router.post("/", validate(productSchema), authenticateToken, productController.createProduct);
+router.post("/", authenticateToken, validate(productSchema), productController.createProduct);
 
 module.exports = router;

@@ -14,20 +14,15 @@ const getProducts = async (req, res) => {
 
 const createProduct = async (req, res) => {
   try {
-    const { sku, name, price } = req.body;
-    if (!sku || !name || !price) {
-      return res.status(400).json({
-        success: false,
-        message: "SKU, Name, dan Price wajib diisi!",
-      });
-    }
     const newProduct = await productService.createProduct(req.body);
+
     res.status(201).json({
       success: true,
       message: "Produk berhasil ditambahkan",
       data: newProduct,
     });
   } catch (error) {
+    // p2002 unique constraint failed Prisma ORM (Pelanggaran Batasan Unik)
     if (error.code === "P2002") {
       return res
         .status(400)
