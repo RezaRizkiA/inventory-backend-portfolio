@@ -8,7 +8,7 @@ const validate = (schema) => (req, res, next) => {
     req.body = result.data;
     next();
   } else {
-    // Ambil error dengan aman
+    // Ambil ZodError
     const errorMessages = result.error.issues.map((err) => ({
       field: err.path.join("."),
       message: err.message,

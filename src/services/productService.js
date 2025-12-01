@@ -2,6 +2,10 @@ const prisma = require("../utils/prisma");
 
 const getAllProducts = async () => {
   const products = await prisma.product.findMany({
+    // include adalah jika ingin menampilkan relasi nya juga, atau bisa pakai select.
+    // include: {
+    //   transactions: true
+    // },
     orderBy: { createdAt: "desc" },
   });
   return products;

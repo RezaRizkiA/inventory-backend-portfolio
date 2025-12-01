@@ -2,19 +2,7 @@ const transactionService = require("../services/transactionService");
 
 const createTransaction = async (req, res) => {
   try {
-    const { productId, quantity, platform } = req.body;
-    if (!productId || !quantity || !platform) {
-      return res.status(400).json({
-        success: false,
-        message: "Product ID, Quantity, dan Platform wajib diisi!",
-      });
-    }
-
-    const result = await transactionService.createTransaction({
-      productId: parseInt(productId),
-      quantity: parseInt(quantity),
-      platform,
-    });
+    const result = await transactionService.createTransaction(req.body);
 
     res.status(201).json({
       success: true,

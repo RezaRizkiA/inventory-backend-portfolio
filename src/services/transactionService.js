@@ -6,14 +6,14 @@ const createTransaction = async (data) => {
 
   // gunakan prisma.$transaction untuk memastikan integritas data
   // artinya: semua sukses, atau semua gagal (rollback)
-  return await prisma
-    .$transaction(async (tx) => {
+  return await prisma.$transaction(async (tx) => {
       // 1. cek produk dulu
       const product = await tx.product.findUnique({
         where: { id: productId },
       });
 
       if (!product) {
+        // throw new Error => hentikan eksekusi secara paksa dan picu error
         throw new Error("Produk tidak ditemukan");
       }
 
@@ -25,7 +25,7 @@ const createTransaction = async (data) => {
       // 3. hitung total harga
       const totalAmount = product.price * quantity;
 
-      // 4. update stok produk (kurangi)
+      // 4. update stok produk (kurangi) menggunakan atomic update (decrement)
       const updatedProduct = await tx.product.update({
         where: { id: productId },
         data: { stock: { decrement: quantity } },

@@ -5,7 +5,7 @@ const authenticateToken = require("../middleware/authMiddleware");
 const validate = require("../middleware/validateMiddleware");
 const { transactionSchema } = require("../validations/apiSchemas");
 
-router.post("/", validate(transactionSchema), authenticateToken, transactionController.createTransaction);
+router.post("/", authenticateToken, validate(transactionSchema), transactionController.createTransaction);
 router.get("/", authenticateToken, transactionController.getTransactions);
 
 module.exports = router;

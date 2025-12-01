@@ -1,5 +1,6 @@
 const { z } = require("zod");
 
+//z.object({}) adalah wajib diisi (required).
 const registerSchema = z.object({
   email: z.string().email({ message: "Format email tidak valid" }),
   password: z.string().min(6, { message: "Password minimal 6 karakter" }),
