@@ -82,6 +82,24 @@ paths:
     get:
       summary: Ambil semua data produk
       tags: [Products]
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Halaman ke berapa
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+          description: Jumlah item per halaman
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Cari berdasarkan nama produk (Opsional)
       responses:
         200:
           description: Berhasil mengambil data
