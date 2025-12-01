@@ -3,6 +3,9 @@ const cors = require("cors");
 const productRoutes = require("./routes/productRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const authRoutes = require("./routes/authRoutes");
+
+
 // imp library dokumentasi
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
@@ -27,10 +30,13 @@ app.get("/", (req, res) => {
 
 // Load file YAML
 // Gunakan path.join agar aman di Windows/Linux
-const swaggerDocument = YAML.load(path.join(__dirname, '../api.yaml'));
+const swaggerDocument = YAML.load(path.join(__dirname, "../api.yaml"));
 
 // Buat Route khusus untuk dokumentasi
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// routes Auth
+app.use("/api/auth", authRoutes);
 
 // routes product
 app.use("/api/products", productRoutes);
