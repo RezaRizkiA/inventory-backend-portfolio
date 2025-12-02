@@ -4,6 +4,8 @@ info:
   description: Dokumentasi API untuk sistem manajemen stok dan dashboard real-time
   version: 1.0.0
 servers:
+  - url: inventory-backend-portfolio-production.up.railway.app
+    description: Production Server (railway)
   - url: http://localhost:3000
     description: Development servers
 
