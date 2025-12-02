@@ -31,7 +31,7 @@ model Transaction {
   id Int @id @default(autoincrement())
   productId Int
   quantity Int
-  totalAmount Decimal @db.Decimal(10, 2)
+  totalAmount Decimal @db.Decimal(20, 2)
   platform String 
   createdAt DateTime @default(now())
 
